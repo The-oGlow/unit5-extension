@@ -1,0 +1,34 @@
+// import settings
+:site_resource: src/site/resources
+include::{site_resource}/proj-common.adoc[opts=optional]
+
+= {proj_module}
+
+{cmmn_backlink}
+
+== Quality Information
+
+{cmmn_sonar_dash_url}?id={proj_sonarid}[image:{cmmn_sonar_api_url}/project_badges/quality_gate?project={proj_sonarid}[Quality Gate]]
+
+== Build Information
+:brnch_1: develop
+:brnch_2: master
+{proj_pipe_url}{brnch_1}[
+image:{cmmn_badge_gitlab_status_url}/{proj_vcsid}?branch={brnch_1}&label={brnch_1}{cmmn_img_gitlab_style}[title="Pipeline status on {brnch_1} branch"]
+]
+{proj_pipe_url}{brnch_2}[
+image:{cmmn_badge_gitlab_status_url}/{proj_vcsid}?branch={brnch_2}&label={brnch_2}{cmmn_img_gitlab_style}[title="Pipeline status on {brnch_2} branch"]
+]
+{proj_vcsid_url}/-/releases[image:{proj_vcsid_url}/-/badges/release.svg[title="Latest Release"]]
+
+== Test Information
+
+{cmmn_sonar_dash_url}?id={proj_sonarid}[image:{cmmn_badge_sonar_url}/test_success_density/{proj_sonarid}?{cmmn_sonar_ref}{cmmn_img_style}[Test Status]]
+{cmmn_sonar_dash_url}?id={proj_sonarid}[image:{cmmn_badge_sonar_url}/tests/{proj_sonarid}?{cmmn_sonar_ref}{cmmn_img_style}[Test Count]]
+{cmmn_sonar_dash_url}?id={proj_sonarid}[image:{cmmn_badge_sonar_url}/coverage/{proj_sonarid}?{cmmn_sonar_ref}{cmmn_img_style}[Coverage Status]]
+{cmmn_sonar_dash_url}?id={proj_sonarid}[image:{cmmn_sonar_api_url}/project_badges/measure?project={proj_sonarid}&metric=coverage[Coverage]]
+
+''''
+{cmmn_backlink}
+
+~{proj_cright}~

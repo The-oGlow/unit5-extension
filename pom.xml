@@ -1,0 +1,183 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>com.glowa-net.maven.parent</groupId>
+        <artifactId>global-appl-pom</artifactId>
+        <version>3-SNAPSHOT</version>
+        <relativePath/>
+    </parent>
+
+    <groupId>com.glowa-net.maven.tools</groupId>
+    <artifactId>unit5-extension</artifactId>
+    <version>5.0.0-SNAPSHOT</version>
+
+    <!-- Section Common -->
+    <name>Unit5 Extension</name>
+    <description>Simplified automatic testing</description>
+    <url>http://www.glowa-net.com</url>
+    <inceptionYear>2020</inceptionYear>
+
+    <scm>
+        <!-- scm-connections are defined as constant -->
+        <connection>scm:git:https://gitlab.com/the-oglow/unit5-extension.git</connection>
+        <developerConnection>scm:git:https://gitlab.com/the-oglow/unit5-extension.git</developerConnection>
+        <url>${project.env.CI_PROJECT_URL}</url>
+        <tag>HEAD</tag>
+    </scm>
+
+    <!-- Section Properties -->
+    <properties>
+        <!-- Gitlab Properties -->
+        <project.env.CI_PROJECT_ID>????</project.env.CI_PROJECT_ID>
+
+        <!-- Sonar Properties -->
+        <sonar.projectKey>ollily_unit-extension</sonar.projectKey>
+    </properties>
+
+    <!-- Section Dependencies -->
+    <dependencyManagement>
+    </dependencyManagement>
+
+    <dependencies>
+        <!-- My -->
+        <!-- 3rd party -->
+        <dependency>
+            <groupId>org.apache.logging.log4j</groupId>
+            <artifactId>log4j-api</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.logging.log4j</groupId>
+            <artifactId>log4j-core</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-lang3</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-api</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-engine</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.junit.vintage</groupId>
+            <artifactId>junit-vintage-engine</artifactId>
+        </dependency>
+
+        <!--
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-migrationsupport</artifactId>
+        </dependency>
+                <dependency>
+                    <groupId>junit</groupId>
+                    <artifactId>junit</artifactId>
+                </dependency>
+        -->
+        <dependency>
+            <groupId>org.hamcrest</groupId>
+            <artifactId>hamcrest</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.mockito</groupId>
+            <artifactId>mockito-core</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.easymock</groupId>
+            <artifactId>easymock</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-test</artifactId>
+        </dependency>
+        <!-- Test -->
+        <dependency>
+            <groupId>org.powermock</groupId>
+            <artifactId>powermock-core</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.powermock</groupId>
+            <artifactId>powermock-module-junit4</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.powermock</groupId>
+            <artifactId>powermock-api-mockito2</artifactId>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
+
+    <!-- Section Repositories -->
+    <repositories>
+        <repository>
+            <id>coding.central</id>
+            <name>Central is the 1st in row.</name>
+            <url>https://repo.maven.apache.org/maven2</url>
+            <snapshots>
+                <enabled>false</enabled>
+                <updatePolicy>always</updatePolicy>
+                <checksumPolicy>warn</checksumPolicy>
+            </snapshots>
+            <releases>
+                <enabled>true</enabled>
+                <updatePolicy>daily</updatePolicy>
+                <checksumPolicy>warn</checksumPolicy>
+            </releases>
+        </repository>
+        <repository>
+            <id>coding.read</id>
+            <name>CASSI-Central Awesome Snap Shot Index</name>
+            <url>https://gitlab.com/api/v4/groups/10107405/-/packages/maven</url>
+            <snapshots>
+                <enabled>true</enabled>
+                <updatePolicy>always</updatePolicy>
+                <checksumPolicy>warn</checksumPolicy>
+            </snapshots>
+            <releases>
+                <enabled>true</enabled>
+                <updatePolicy>daily</updatePolicy>
+                <checksumPolicy>warn</checksumPolicy>
+            </releases>
+        </repository>
+    </repositories>
+
+    <pluginRepositories>
+        <pluginRepository>
+            <id>coding.central</id>
+            <name>Central is the 1st in row.</name>
+            <url>https://repo.maven.apache.org/maven2</url>
+            <snapshots>
+                <enabled>false</enabled>
+                <updatePolicy>always</updatePolicy>
+                <checksumPolicy>fail</checksumPolicy>
+            </snapshots>
+            <releases>
+                <enabled>true</enabled>
+                <updatePolicy>daily</updatePolicy>
+                <checksumPolicy>fail</checksumPolicy>
+            </releases>
+        </pluginRepository>
+        <pluginRepository>
+            <id>coding.read</id>
+            <name>CASSI-Central Awesome Snap Shot Index</name>
+            <url>https://gitlab.com/api/v4/groups/10107405/-/packages/maven</url>
+            <snapshots>
+                <enabled>true</enabled>
+                <updatePolicy>always</updatePolicy>
+                <checksumPolicy>fail</checksumPolicy>
+            </snapshots>
+            <releases>
+                <enabled>true</enabled>
+                <updatePolicy>daily</updatePolicy>
+                <checksumPolicy>fail</checksumPolicy>
+            </releases>
+        </pluginRepository>
+    </pluginRepositories>
+
+</project>
