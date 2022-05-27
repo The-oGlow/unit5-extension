@@ -1,15 +1,22 @@
 package com.glowanet.util.junit.jupiter.api.extension;
 
+import com.glowanet.util.reflect.ReflectionHelper;
 import org.hamcrest.Matcher;
-import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.jupiter.api.extension.AfterAllCallback;
+import org.junit.jupiter.api.extension.AfterEachCallback;
+import org.junit.jupiter.api.extension.AfterTestExecutionCallback;
+import org.junit.jupiter.api.extension.BeforeAllCallback;
+import org.junit.jupiter.api.extension.BeforeEachCallback;
+import org.junit.jupiter.api.extension.ExtensionContext;
 import org.junit.jupiter.api.function.Executable;
-import org.junit.rules.Verifier;
 import org.opentest4j.MultipleFailuresError;
 import org.opentest4j.TestAbortedException;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.concurrent.Callable;
+import java.util.stream.Collectors;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -36,13 +43,35 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
  *
  * @since 4.7
  */
-@ExtendWith(SoftAssertionsExtension.class)
-public class ErrorCollector extends Verifier {
+public class ErrorCollector implements BeforeAllCallback, AfterAllCallback, BeforeEachCallback, AfterEachCallback, AfterTestExecutionCallback {
+
     private List<Throwable> errors = new ArrayList<Throwable>();
 
     @Override
-    protected void verify() throws Throwable {
+    public void beforeAll(ExtensionContext context) throws Exception {
+        System.out.println("beforeAll");
+        reset();
+    }
+
+    @Override
+    public void afterAll(ExtensionContext context) throws Exception {
+        System.out.println("afterAll");
+    }
+
+    @Override
+    public void beforeEach(ExtensionContext context) throws Exception {
+        System.out.println("beforeEach");
+    }
+
+    @Override
+    public void afterEach(ExtensionContext context) throws Exception {
+        System.out.println("afterEach");
         assertEmpty(errors);
+    }
+
+    @Override
+    public void afterTestExecution(ExtensionContext context) throws Exception {
+        System.out.println("afterTestExecution");
     }
 
     /**
@@ -55,7 +84,7 @@ public class ErrorCollector extends Verifier {
      * try {
      *   doSomething();
      * } catch (Throwable e} {
-     *   throw Throwables.rethrowAsException(e);
+     *   throw rethrowAsException(e);
      * }
      * doSomethingLater();
      * </pre>
@@ -179,6 +208,68 @@ public class ErrorCollector extends Verifier {
         } catch (AssertionError e) {
             addError(e);
         }
+    }
+
+    /**
+     * Write a list of throwables into the collector.
+     *
+     * @param errors List of throwables
+     */
+    protected void writeErrors(List<Throwable> errors) {
+        ReflectionHelper.writeField("errors", this, errors);
+    }
+
+    /**
+     * @return How many errors are collected.
+     */
+    public int getErrorSize() {
+        int size = 0;
+        List<Throwable> errors = readErrors();
+        if (errors != null) {
+            size = readErrors().size();
+        }
+        return size;
+    }
+
+    /**
+     * @return List of collected error messages
+     *
+     * @see #getErrorTextsToString()
+     */
+    public List<String> getErrorTexts() {
+        List<Throwable> errors = readErrors();
+        List<String> errorTexts = new ArrayList<>();
+        if (errors != null) {
+            errorTexts = errors.stream()
+                    .map(m -> Optional.ofNullable(m.getMessage()).orElse(m.getClass().getName()))
+                    .collect(Collectors.toList());
+        }
+        return errorTexts;
+    }
+
+    /**
+     * @return All collected error messages, delimited with '\n'
+     *
+     * @see #getErrorTexts()
+     */
+    public String getErrorTextsToString() {
+        return getErrorTexts().stream()
+                .map(String::toString)
+                .collect(Collectors.joining("\n"));
+    }
+
+    /**
+     * Clear the collector.
+     */
+    public void reset() {
+        writeErrors(new ArrayList<Throwable>());
+    }
+
+    /**
+     * @return List or collected throwables.
+     */
+    protected List<Throwable> readErrors() {
+        return ReflectionHelper.readField("errors", this);
     }
 
 }

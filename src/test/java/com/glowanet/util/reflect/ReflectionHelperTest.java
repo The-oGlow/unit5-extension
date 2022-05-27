@@ -1,30 +1,7 @@
 package com.glowanet.util.reflect;
 
-import com.glowanet.data.SimplePojo;
-import com.glowanet.data.SimpleSerializable;
-import org.hamcrest.Matcher;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-
-import java.beans.IntrospectionException;
-import java.beans.PropertyDescriptor;
-import java.lang.reflect.Field;
-import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.List;
-
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.containsString;
-import static org.hamcrest.Matchers.equalTo;
-import static org.hamcrest.Matchers.hasSize;
-import static org.hamcrest.Matchers.instanceOf;
-import static org.hamcrest.Matchers.notNullValue;
-import static org.hamcrest.Matchers.nullValue;
-import static org.junit.Assert.assertThrows;
-
 public class ReflectionHelperTest {
-
+/*
     public static final String   SIMPLE_STRING_NAME  = "simpleString";
     public static final Class<?> SIMPLE_STRING_CLAZZ = String.class;
     public static final String   SIMPLE_STRING_VALUE = "simpleText";
@@ -315,5 +292,5 @@ public class ReflectionHelperTest {
 
         assertValid(actual, containsString(NoSuchMethodException.class.getName()), AssertionError.class);
     }
-
+*/
 }

@@ -1,13 +1,13 @@
 package com.glowanet.util.junit;
 
+import com.glowanet.util.junit.jupiter.api.extension.ErrorCollector;
 import com.glowanet.util.junit.rules.ErrorCollectorExt;
 import com.glowanet.util.reflect.ReflectionHelper;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.hamcrest.Matcher;
 import org.hamcrest.Matchers;
-import org.junit.function.ThrowingRunnable;
-import org.junit.rules.ErrorCollector;
+import org.junit.jupiter.api.function.Executable;
 
 import java.util.Collection;
 
@@ -18,7 +18,7 @@ import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.instanceOf;
 import static org.hamcrest.Matchers.notNullValue;
 import static org.hamcrest.Matchers.nullValue;
-import static org.junit.Assert.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 /**
  * A helper to verify unit tests in a common way.
@@ -88,12 +88,11 @@ public class TestResultHelper {
     @SuppressWarnings("unchecked")
     public static void verifyCollector(Object collectorOrInstance, Matcher<?> errorSizeMatcher) {
         ErrorCollector collector = prepareCollector(collectorOrInstance);
-        if (isExtend(collector)) {
-            ErrorCollectorExt collectorExt = (ErrorCollectorExt) collector;
-            if (!errorSizeMatcher.matches(collectorExt.getErrorSize())) {
-                logTheErrors(collectorExt);
+        if (isCollector(collector)) {
+            if (!errorSizeMatcher.matches(collector.getErrorSize())) {
+                logTheErrors(collector);
             }
-            assertThat(collectorExt.getErrorSize(), (Matcher<Number>) errorSizeMatcher);
+            assertThat(collector.getErrorSize(), (Matcher<Number>) errorSizeMatcher);
         } else {
             // legacy mode
             Object actualThrows = ReflectionHelper.readField(ERRORS_NAME, collector);
@@ -111,7 +110,7 @@ public class TestResultHelper {
      */
     public static void verifyCollector(Object collectorOrInstance, int errorSize) {
         ErrorCollector collector = prepareCollector(collectorOrInstance);
-        if (isExtend(collector)) {
+        if (isCollector(collector)) {
             verifyCollector(collector, equalTo(errorSize));
         } else {
             // legacy mode
@@ -146,8 +145,8 @@ public class TestResultHelper {
     public static void verifyCollectorWithReset(Object collectorOrInstance, Matcher<?> errorSizeMatcher) {
         ErrorCollector collector = prepareCollector(collectorOrInstance);
         verifyCollector(collector, errorSizeMatcher);
-        if (isExtend(collector)) {
-            ((ErrorCollectorExt) collector).reset();
+        if (isCollector(collector)) {
+            collector.reset();
         }
     }
 
@@ -162,8 +161,8 @@ public class TestResultHelper {
     public static void verifyCollectorWithReset(Object collectorOrInstance, int errorSize) {
         ErrorCollector collector = prepareCollector(collectorOrInstance);
         verifyCollector(collector, errorSize);
-        if (isExtend(collector)) {
-            ((ErrorCollectorExt) collector).reset();
+        if (isCollector(collector)) {
+            collector.reset();
         }
     }
 
@@ -172,7 +171,7 @@ public class TestResultHelper {
      *
      * @throws AssertionError is thrown, if the {@code runnable} has raised an exception
      */
-    public static void verifyNoException(ThrowingRunnable runnable) {
+    public static void verifyNoException(Executable runnable) {
         AssertionError error = assertThrows(AssertionError.class, () -> assertThrows(Throwable.class, runnable));
 
         assertThat(error, notNullValue());
@@ -187,7 +186,7 @@ public class TestResultHelper {
      *
      * @throws AssertionError is thrown, if the {@code runnable} has raised no exception or a different exception
      */
-    public static Throwable verifyException(ThrowingRunnable runnable, Class<?> expectedClazz) {
+    public static Throwable verifyException(Executable runnable, Class<?> expectedClazz) {
         Throwable throwable = assertThrows(Throwable.class, runnable);
 
         assertThat(throwable, notNullValue());
@@ -202,7 +201,7 @@ public class TestResultHelper {
      *
      * @throws AssertionError is thrown, if the {@code runnable} has raised no exception or a different exception or a different error message
      */
-    public static void verifyException(ThrowingRunnable runnable, Class<?> expectedClazz, String expectedMsg) {
+    public static void verifyException(Executable runnable, Class<?> expectedClazz, String expectedMsg) {
         Throwable throwable = verifyException(runnable, expectedClazz);
 
         assertThat(throwable.getMessage(), containsString(expectedMsg));
@@ -293,10 +292,9 @@ public class TestResultHelper {
      */
     protected static void logTheErrors(Object collectorOrInstance) {
         ErrorCollector collector = prepareCollector(collectorOrInstance);
-        if (isExtend(collector)) {
-            ErrorCollectorExt collectorExt = (ErrorCollectorExt) collector;
-            if (collectorExt.getErrorSize() > 0) {
-                LOGGER.error(String.format("These are the collected errors :\n%s", collectorExt.getErrorTextsToString()));
+        if (isCollector(collector)) {
+            if (collector.getErrorSize() > 0) {
+                LOGGER.error(String.format("These are the collected errors :\n%s", collector.getErrorTextsToString()));
             } else {
                 LOGGER.error("No errors collected!");
             }

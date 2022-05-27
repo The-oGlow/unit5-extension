@@ -4,7 +4,7 @@ import com.glowanet.data.SimplePojo;
 import org.hamcrest.Description;
 import org.hamcrest.Matcher;
 import org.hamcrest.StringDescription;
-import org.junit.Assert;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.test.util.ReflectionTestUtils;
@@ -131,7 +131,7 @@ public class PropertyMatcherTest {
 
         Method method = (Method) ReflectionTestUtils.getField(o2T, "readMethod");
 
-        Throwable actual = Assert.assertThrows(Throwable.class, () -> o2T.readProperty(method, target));
+        Throwable actual = Assertions.assertThrows(Throwable.class, () -> o2T.readProperty(method, target));
 
         assertThat(actual, instanceOf(IllegalArgumentException.class));
     }

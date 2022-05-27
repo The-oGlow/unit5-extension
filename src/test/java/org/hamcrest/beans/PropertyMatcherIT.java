@@ -1,7 +1,7 @@
 package org.hamcrest.beans;
 
 import org.hamcrest.Description;
-import org.junit.Assert;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -14,7 +14,7 @@ public class PropertyMatcherIT extends PropertyMatcherTest {
     public void testDescribeTo_withNull_throw_NPE() {
         Description testDescription = null;
 
-        Throwable actual = Assert.assertThrows(Throwable.class, () -> o2T.describeTo(testDescription));
+        Throwable actual = Assertions.assertThrows(Throwable.class, () -> o2T.describeTo(testDescription));
 
         assertThat(actual, instanceOf(NullPointerException.class));
     }

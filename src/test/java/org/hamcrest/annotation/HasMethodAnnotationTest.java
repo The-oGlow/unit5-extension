@@ -2,8 +2,8 @@ package org.hamcrest.annotation;
 
 import org.hamcrest.Description;
 import org.hamcrest.StringDescription;
-import org.junit.Ignore;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import java.lang.annotation.Annotation;
@@ -22,7 +22,7 @@ public class HasMethodAnnotationTest {
         }
 
         @SuppressWarnings("java:S1607")
-        @BeforeEach
+        @Disabled
         boolean methodWithAnnnotation() {
             return false;
         }
@@ -33,7 +33,7 @@ public class HasMethodAnnotationTest {
     protected final String                       methodName                  = "methodWithAnnnotation";
     protected final String                       methodNameWithoutAnnotation = "methodWithoutAnnotation";
     protected final String                       wrongMethodName             = "wrongMethodName";
-    protected final Class<? extends Annotation>  annotationClazz             = Ignore.class;
+    protected final Class<? extends Annotation>  annotationClazz             = Disabled.class;
 
     @BeforeEach
     public void setUp() {

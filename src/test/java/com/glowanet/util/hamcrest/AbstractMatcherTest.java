@@ -4,7 +4,7 @@ import org.hamcrest.AbstractExtendedMatcherTest;
 import org.hamcrest.Description;
 import org.hamcrest.Matcher;
 import org.hamcrest.StringDescription;
-import org.junit.Assert;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -14,7 +14,6 @@ import static org.hamcrest.Matchers.instanceOf;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.not;
 import static org.hamcrest.Matchers.notNullValue;
-import static org.junit.Assert.assertThrows;
 
 /**
  * Base class for testing a {@link org.hamcrest.BaseMatcher}
@@ -101,7 +100,7 @@ public abstract class AbstractMatcherTest<T> {
      * @see #fail()
      */
     protected static void fail(String message) {
-        Assert.fail(message);
+        Assertions.fail(message);
     }
 
     /**
@@ -110,7 +109,7 @@ public abstract class AbstractMatcherTest<T> {
      * @see #fail(String)
      */
     protected static void fail() {
-        Assert.fail();
+        Assertions.fail();
     }
 
     /**
@@ -340,7 +339,7 @@ public abstract class AbstractMatcherTest<T> {
     public void testGeneric_testMatches_objectsAreDifferent_throw_assertError() {
         T argument = prepareArgumentToCompareWith();
 
-        Throwable actualThrowable = assertThrows(Throwable.class, () -> assertThat(argument, o2T));
+        Throwable actualThrowable = Assertions.assertThrows(Throwable.class, () -> assertThat(argument, o2T));
         verifyThrowable(actualThrowable, prepareMatcher_objectsAreDifferent_check());
     }
 

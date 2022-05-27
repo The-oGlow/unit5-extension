@@ -2,6 +2,7 @@ package org.hamcrest.core;
 
 import org.hamcrest.Description;
 import org.hamcrest.StringDescription;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -11,7 +12,6 @@ import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.not;
 import static org.hamcrest.Matchers.notNullValue;
-import static org.junit.Assert.assertThrows;
 
 /**
  * @see IsBetween
@@ -95,7 +95,7 @@ public class IsBetweenTest {
     @SuppressWarnings("ConstantConditions")
     @Test
     public void testDescribeMismatchSafelyNullValueDescription() {
-        assertThrows(NullPointerException.class, () -> o2T.describeMismatchSafely(LBOUND, null));
+        Assertions.assertThrows(NullPointerException.class, () -> o2T.describeMismatchSafely(LBOUND, null));
     }
 
     @Test
@@ -129,6 +129,6 @@ public class IsBetweenTest {
     @SuppressWarnings("ConstantConditions")
     @Test
     public void testDescribeToNullValueDescription() {
-        assertThrows(NullPointerException.class, () -> o2T.describeTo(null));
+        Assertions.assertThrows(NullPointerException.class, () -> o2T.describeTo(null));
     }
 }

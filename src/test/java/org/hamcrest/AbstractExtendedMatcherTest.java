@@ -1,11 +1,11 @@
 package org.hamcrest;
 
 import com.glowanet.util.hamcrest.AbstractMatcherTest;
+import org.junit.jupiter.api.Assumptions;
 import org.junit.jupiter.api.Test;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
-import static org.junit.Assume.assumeThat;
 
 /**
  * Base class for the use of testing extended matcher, like
@@ -46,14 +46,14 @@ public abstract class AbstractExtendedMatcherTest<T> extends AbstractMatcherTest
      * Call to assume that {@link #o2T()} satisfies the condition that is a {@link TypeSafeMatcher}.
      */
     protected void assumeIsTypeSafeMatcher() {
-        assumeThat("No TypeSafeMatcher available!", isMatcherType(TypeSafeMatcher.class, o2T()), is(true));
+        Assumptions.assumeTrue(isMatcherType(TypeSafeMatcher.class, o2T()), "No TypeSafeMatcher available!");
     }
 
     /**
      * Call to assume that {@link #o2T()} satisfies the condition that is a {@link DiagnosingMatcher}.
      */
     protected void assumeIsDiagnosingMatcher() {
-        assumeThat("No DiagnosingMatcher available!", isMatcherType(DiagnosingMatcher.class, o2T()), is(true));
+        Assumptions.assumeTrue(isMatcherType(DiagnosingMatcher.class, o2T()), "No DiagnosingMatcher available!");
     }
 
     /* Section for {@link org.hamcrest.TypeSafeMatcher} unit tests */
