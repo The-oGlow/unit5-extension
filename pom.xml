@@ -16,7 +16,7 @@
 
     <!-- Section Common -->
     <name>Unit5 Extension</name>
-    <description>Simplified automatic testing with JUnit5</description>
+    <description>Some useful extensions for unit testings with JUnit5</description>
     <url>http://www.glowa-net.com</url>
     <inceptionYear>2022</inceptionYear>
 
