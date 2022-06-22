@@ -16,9 +16,9 @@
 
     <!-- Section Common -->
     <name>Unit5 Extension</name>
-    <description>Simplified automatic testing</description>
+    <description>Simplified automatic testing with JUnit5</description>
     <url>http://www.glowa-net.com</url>
-    <inceptionYear>2020</inceptionYear>
+    <inceptionYear>2022</inceptionYear>
 
     <scm>
         <!-- scm-connections are defined as constant -->
@@ -31,10 +31,8 @@
     <!-- Section Properties -->
     <properties>
         <!-- Gitlab Properties -->
-        <project.env.CI_PROJECT_ID>????</project.env.CI_PROJECT_ID>
-
-        <!-- Sonar Properties -->
-        <sonar.projectKey>ollily_unit-extension</sonar.projectKey>
+        <!-- This gitlab repository -->
+        <project.env.CI_PROJECT_ID>37254570</project.env.CI_PROJECT_ID>
     </properties>
 
     <!-- Section Dependencies -->
