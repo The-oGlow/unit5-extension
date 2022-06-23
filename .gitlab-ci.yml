@@ -100,3 +100,4 @@ sonarcloud:
   only:
     - merge_requests
     - develop
+    - master
