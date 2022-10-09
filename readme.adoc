@@ -59,8 +59,8 @@
 :cmmn_codacy_ref: logo=codacy
 :cmmn_maven_url: https://mvnrepository.com/artifact
 :cmmn_backlink: link:README.adoc[image:{cmmn_badge_url}/%3C%3D%3D%20GO-Back-lightgrey[title="go 2 previous page"]]
-:cmmn_pipelink: -/pipelines?ref=
-:cmmn_workflowLink: actions/workflows
+:cmmn_gitlab_pipe_link: -/pipelines?ref=
+:cmmn_github_workflow_link: actions/workflows
 
 // project settings (generated)
 :proj_vcsid: {proj_gitgroup}/{proj_module}
@@ -72,8 +72,8 @@
 :proj_user_url: {proj_vcs_url}/{proj_user_org}
 :proj_vcsid_url: {proj_vcs_url}/{proj_vcsid}
 :proj_mvnid_url: {cmmn_maven_url}/{proj_gav}
-:proj_pipe_url: {proj_vcsid_url}/{cmmn_pipelink}
-:proj_wflow_url: {proj_vcsid_url}/{cmmn_workflowLink}
+:proj_gitlab_pipe_url: {proj_vcsid_url}/{cmmn_gitlab_pipe_link}
+:proj_github_wflow_url: {proj_vcsid_url}/{cmmn_github_workflow_link}
 
 :source-highlighter: highlight.js
 
@@ -127,9 +127,9 @@ link:{cmmn_badge_openssf_url}/{proj_id_openssf}[image:{cmmn_openssf_dash_url}/{p
 :brnch_1: master
 :brnch_2: develop
 
-link:{proj_wflow_url}/maven.yml?query=branch%3A{brnch_1}[
+link:{proj_github_wflow_url}/maven.yml?query=branch%3A{brnch_1}[
 image:{cmmn_badge_github_status_url}/{proj_vcsid}/maven-build/{brnch_1}?label={brnch_1}{cmmn_img_github_style}[title="Pipeline status on {brnch_1} branch"]]
-link:{proj_wflow_url}/maven.yml?query=branch%3A{brnch_2}[
+link:{proj_github_wflow_url}/maven.yml?query=branch%3A{brnch_2}[
 image:{cmmn_badge_github_status_url}/{proj_vcsid}/maven-build/{brnch_2}?label={brnch_2}{cmmn_img_github_style}[title="Pipeline status on {brnch_2} branch"]]
 
 === Test Information
