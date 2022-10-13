@@ -24,7 +24,7 @@ import static org.junit.jupiter.api.Assertions.fail;
  * @author Oliver Glowa
  * @since 0.10.000
  */
-public final class ReflectionHelper {
+public class ReflectionHelper {
 
     private ReflectionHelper() {
     }
@@ -433,10 +433,10 @@ public final class ReflectionHelper {
      */
     @SuppressWarnings("java:S5960")
     private static void failure(final Object param, final Object suffix, final Throwable throwable) throws AssertionError {
-        final String msg = String.format("Can't find or access '%s%s' %s", //
-                (param == null ? "NULL" : param), //
-                (suffix == null || suffix.toString().isEmpty() ? "#NULL" : ("#" + suffix)), //
-                (throwable == null ? "!" : (":" + System.lineSeparator() + ExceptionUtils.getStackTrace(throwable))) //
+        final String msg = String.format("Can't find or access '%s%s' %s",
+                (param == null ? "NULL" : param),
+                (suffix == null || suffix.toString().isEmpty() ? "#NULL" : ("#" + suffix)),
+                (throwable == null ? "!" : (":" + System.lineSeparator() + ExceptionUtils.getStackTrace(throwable)))
         );
         fail(msg);
     }

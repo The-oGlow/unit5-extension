@@ -1,7 +1,6 @@
 package com.glowanet.util.junit;
 
 import com.glowanet.util.junit.jupiter.api.extension.ErrorCollector;
-import com.glowanet.util.junit.rules.ErrorCollectorExt;
 import com.glowanet.util.reflect.ReflectionHelper;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -242,7 +241,7 @@ public class TestResultHelper {
      *
      * @throws AssertionError is thrown, if the {@code instance} does not contain a {@link ErrorCollector}
      */
-    protected static ErrorCollector extractCollector(Object instance) {
+    static ErrorCollector extractCollector(Object instance) {
         Object field = ReflectionHelper.readField(COLLECTOR_NAME, instance);
 
         assertThat(field, notNullValue());
@@ -257,7 +256,7 @@ public class TestResultHelper {
      *
      * @throws AssertionError is thrown, if the {@code collectorOrInstance} is no {@link ErrorCollector) or }does not contain a {@link ErrorCollector}
      */
-    protected static ErrorCollector prepareCollector(Object collectorOrInstance) {
+    static ErrorCollector prepareCollector(Object collectorOrInstance) {
         ErrorCollector collector;
         if (isCollector(collectorOrInstance)) {
             collector = (ErrorCollector) collectorOrInstance;
@@ -272,17 +271,20 @@ public class TestResultHelper {
      *
      * @return TRUE=the {@code collectorOrInstance} is an {@link ErrorCollector}, else FALSE
      */
-    protected static boolean isCollector(Object collectorOrInstance) {
+    static boolean isCollector(Object collectorOrInstance) {
         return (instanceOf(ErrorCollector.class).matches(collectorOrInstance));
     }
 
     /**
      * @param collector an instance of a collector
      *
-     * @return TRUE=the {@code collector} is an {@link ErrorCollectorExt}, else FALSE
+     * @return TRUE=the {@code collector} is an 'com.glowanet.util.junit.rules.ErrorCollectorExt', else FALSE
+     *
+     * @deprecated
      */
-    protected static boolean isExtend(ErrorCollector collector) {
-        return (instanceOf(ErrorCollectorExt.class).matches(collector));
+    @Deprecated(forRemoval = true, since = "5.0.0")
+    static boolean isExtend(ErrorCollector collector) {
+        return isCollector(collector);
     }
 
     /**
@@ -290,11 +292,11 @@ public class TestResultHelper {
      *
      * @param collectorOrInstance an instance of a collector
      */
-    protected static void logTheErrors(Object collectorOrInstance) {
+    static void logTheErrors(Object collectorOrInstance) {
         ErrorCollector collector = prepareCollector(collectorOrInstance);
         if (isCollector(collector)) {
             if (collector.getErrorSize() > 0) {
-                LOGGER.error(String.format("These are the collected errors :\n%s", collector.getErrorTextsToString()));
+                LOGGER.error(String.format("These are the collected errors :%n%s", collector.getErrorTextsToString())); //NOSONAR java:S2629
             } else {
                 LOGGER.error("No errors collected!");
             }

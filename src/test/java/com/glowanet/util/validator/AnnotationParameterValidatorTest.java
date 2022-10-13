@@ -1,5 +1,5 @@
 package com.glowanet.util.validator;
-
+ 
 import org.hamcrest.Matcher;
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.BeforeEach;

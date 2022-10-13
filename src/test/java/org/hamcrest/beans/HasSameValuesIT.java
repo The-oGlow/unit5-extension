@@ -47,8 +47,10 @@ public class HasSameValuesIT<T extends SimplePojo> extends HasSameValuesTest<T> 
     }
 
     @Test
+    @SuppressWarnings("java:S5778")
     public void testDescribeMismatch_withNullDescription_throw_NPE() {
-        Assertions.assertThrows(NullPointerException.class, () -> o2T().describeMismatch(prepareArgumentInMatcher(), null));
+        Assertions.assertThrows(NullPointerException.class,
+                () -> o2T().describeMismatch(prepareArgumentInMatcher(), null));
     }
 
     @Test
@@ -68,9 +70,11 @@ public class HasSameValuesIT<T extends SimplePojo> extends HasSameValuesTest<T> 
     }
 
     @Test
+    @SuppressWarnings("java:S5778")
     public void testDescribeMismatchSafely_withNullDescription_throw_NPE() {
         HasSameValues<T> tsO2T = tsO2T();
-        Assertions.assertThrows(NullPointerException.class, () -> tsO2T.describeMismatchSafely(prepareArgumentInMatcher(), null));
+        Assertions.assertThrows(NullPointerException.class,
+                () -> tsO2T.describeMismatchSafely(prepareArgumentInMatcher(), null));
     }
 
 }

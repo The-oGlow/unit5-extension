@@ -109,7 +109,7 @@ public abstract class AbstractMatcherTest<T> {
      * @see #fail(String)
      */
     protected static void fail() {
-        Assertions.fail();
+        Assertions.fail(); //NOSONAR java:S2698
     }
 
     /**
@@ -339,7 +339,7 @@ public abstract class AbstractMatcherTest<T> {
     public void testGeneric_testMatches_objectsAreDifferent_throw_assertError() {
         T argument = prepareArgumentToCompareWith();
 
-        Throwable actualThrowable = Assertions.assertThrows(Throwable.class, () -> assertThat(argument, o2T));
+        Throwable actualThrowable = Assertions.assertThrows(Throwable.class, () -> assertThat(argument, o2T)); //NOSONAR java:S2698
         verifyThrowable(actualThrowable, prepareMatcher_objectsAreDifferent_check());
     }
 

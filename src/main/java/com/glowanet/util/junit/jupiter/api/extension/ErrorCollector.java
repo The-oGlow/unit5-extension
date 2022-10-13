@@ -1,6 +1,8 @@
 package com.glowanet.util.junit.jupiter.api.extension;
 
 import com.glowanet.util.reflect.ReflectionHelper;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.hamcrest.Matcher;
 import org.junit.jupiter.api.extension.AfterAllCallback;
 import org.junit.jupiter.api.extension.AfterEachCallback;
@@ -28,15 +30,15 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
  *
  * <pre>
  * public static class UsesErrorCollectorTwice {
- * 	&#064;Rule
- * 	public ErrorCollector collector= new ErrorCollector();
+ *     &#064;Rule
+ *     public ErrorCollector collector= new ErrorCollector();
  *
- * &#064;Test
- * public void example() {
- *      collector.addError(new Throwable(&quot;first thing went wrong&quot;));
- *      collector.addError(new Throwable(&quot;second thing went wrong&quot;));
- *      collector.checkThat(getResult(), not(containsString(&quot;ERROR!&quot;)));
- *      // all lines will run, and then a combined failure logged at the end.
+ *     &#064;Test
+ *     public void example() {
+ *         collector.addError(new Throwable(&quot;first thing went wrong&quot;));
+ *         collector.addError(new Throwable(&quot;second thing went wrong&quot;));
+ *         collector.checkThat(getResult(), not(containsString(&quot;ERROR!&quot;)));
+ *         // all lines will run, and then a combined failure logged at the end.
  *     }
  * }
  * </pre>
@@ -45,33 +47,35 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
  */
 public class ErrorCollector implements BeforeAllCallback, AfterAllCallback, BeforeEachCallback, AfterEachCallback, AfterTestExecutionCallback {
 
-    private List<Throwable> errors = new ArrayList<Throwable>();
+    private static final Logger LOGGER = LogManager.getLogger();
+
+    private final List<Throwable> errors = new ArrayList<>();
 
     @Override
     public void beforeAll(ExtensionContext context) throws Exception {
-        System.out.println("beforeAll");
+        LOGGER.trace("beforeAll");
         reset();
     }
 
     @Override
     public void afterAll(ExtensionContext context) throws Exception {
-        System.out.println("afterAll");
+        LOGGER.trace("afterAll");
     }
 
     @Override
     public void beforeEach(ExtensionContext context) throws Exception {
-        System.out.println("beforeEach");
+        LOGGER.trace("beforeEach");
     }
 
     @Override
     public void afterEach(ExtensionContext context) throws Exception {
-        System.out.println("afterEach");
+        LOGGER.trace("afterEach");
         assertEmpty(errors);
     }
 
     @Override
     public void afterTestExecution(ExtensionContext context) throws Exception {
-        System.out.println("afterTestExecution");
+        LOGGER.trace("afterTestExecution");
     }
 
     /**
@@ -83,20 +87,21 @@ public class ErrorCollector implements BeforeAllCallback, AfterAllCallback, Befo
      * <pre>
      * try {
      *   doSomething();
-     * } catch (Throwable e} {
-     *   throw rethrowAsException(e);
+     * } catch (Throwable throwableException} {
+     *   throw rethrowAsException(throwableException);
      * }
      * doSomethingLater();
      * </pre>
      *
-     * @param e exception to rethrow
+     * @param throwableException exception to rethrow
      *
      * @return does not return anything
      *
+     * @throws Exception throws the {@code throwableException}
      * @since 4.12
      */
-    public static Exception rethrowAsException(Throwable e) throws Exception {
-        ErrorCollector.<Exception>rethrow(e);
+    public static Exception rethrowAsException(Throwable throwableException) throws Exception {
+        ErrorCollector.<Exception>rethrow(throwableException);
         return null; // we never get here
     }
 
@@ -115,12 +120,17 @@ public class ErrorCollector implements BeforeAllCallback, AfterAllCallback, Befo
      *
      * @throws Exception or Error if the list is not empty
      */
-    private void assertEmpty(List<Throwable> errors) throws Exception {
+    @SuppressWarnings("java:S1162")
+    protected void assertEmpty(List<Throwable> errors) throws Exception {
         if (errors.isEmpty()) {
             return;
         }
         if (errors.size() == 1) {
-            throw rethrowAsException(errors.get(0));
+            if (errors.get(0) != null) {
+                throw rethrowAsException(errors.get(0));
+            } else {
+                throw rethrowAsException(new NullPointerException());
+            }
         }
 
         /*
@@ -136,23 +146,29 @@ public class ErrorCollector implements BeforeAllCallback, AfterAllCallback, Befo
 
     /**
      * Adds a Throwable to the table.  Execution continues, but the test will fail at the end.
+     *
+     * @param throwableException raised exeception
      */
-    public void addError(Throwable error) {
-        if (error == null) {
-            throw new NullPointerException("Error cannot be null");
+    public void addError(Throwable throwableException) {
+        if (throwableException == null) {
+            throw new NullPointerException("Error cannot be null"); //NOSONAR java:S1695
         }
-        if (error instanceof TestAbortedException) {
-            AssertionError e = new AssertionError(error.getMessage());
-            e.initCause(error);
+        if (throwableException instanceof TestAbortedException) {
+            AssertionError e = new AssertionError(throwableException.getMessage());
+            e.initCause(throwableException);
             errors.add(e);
         } else {
-            errors.add(error);
+            errors.add(throwableException);
         }
     }
 
     /**
      * Adds a failure to the table if {@code matcher} does not match {@code value}.
      * Execution continues, but the test will fail at the end if the match fails.
+     *
+     * @param value   a value which will be checked
+     * @param matcher the matcher which checks the {@code value}
+     * @param <T>     the type of {@code value}
      */
     public <T> void checkThat(final T value, final Matcher<T> matcher) {
         checkThat("", value, matcher);
@@ -162,9 +178,14 @@ public class ErrorCollector implements BeforeAllCallback, AfterAllCallback, Befo
      * Adds a failure with the given {@code reason}
      * to the table if {@code matcher} does not match {@code value}.
      * Execution continues, but the test will fail at the end if the match fails.
+     *
+     * @param reason  a message which will be displayed, if not matching
+     * @param value   a value which will be checked
+     * @param matcher the matcher which checks the {@code value}
+     * @param <T>     the type of {@code value}
      */
     public <T> void checkThat(final String reason, final T value, final Matcher<T> matcher) {
-        checkSucceeds(new Callable<Object>() {
+        checkSucceeds(new Callable<>() {
             public Object call() throws Exception {
                 assertThat(reason, value, matcher);
                 return value;
@@ -176,6 +197,11 @@ public class ErrorCollector implements BeforeAllCallback, AfterAllCallback, Befo
      * Adds to the table the exception, if any, thrown from {@code callable}.
      * Execution continues, but the test will fail at the end if
      * {@code callable} threw an exception.
+     *
+     * @param callable amessage
+     * @param <T>      the type which is used in {@code callable}
+     *
+     * @return the result of the {@code callable}
      */
     public <T> T checkSucceeds(Callable<T> callable) {
         try {
@@ -185,7 +211,7 @@ public class ErrorCollector implements BeforeAllCallback, AfterAllCallback, Befo
             error.initCause(e);
             addError(error);
             return null;
-        } catch (Throwable e) {
+        } catch (Exception e) {
             addError(e);
             return null;
         }
@@ -224,8 +250,8 @@ public class ErrorCollector implements BeforeAllCallback, AfterAllCallback, Befo
      */
     public int getErrorSize() {
         int size = 0;
-        List<Throwable> errors = readErrors();
-        if (errors != null) {
+        List<Throwable> errorsRead = readErrors();
+        if (errorsRead != null) {
             size = readErrors().size();
         }
         return size;
@@ -237,10 +263,10 @@ public class ErrorCollector implements BeforeAllCallback, AfterAllCallback, Befo
      * @see #getErrorTextsToString()
      */
     public List<String> getErrorTexts() {
-        List<Throwable> errors = readErrors();
+        List<Throwable> errorsRead = readErrors();
         List<String> errorTexts = new ArrayList<>();
-        if (errors != null) {
-            errorTexts = errors.stream()
+        if (errorsRead != null) {
+            errorTexts = errorsRead.stream()
                     .map(m -> Optional.ofNullable(m.getMessage()).orElse(m.getClass().getName()))
                     .collect(Collectors.toList());
         }
@@ -262,7 +288,7 @@ public class ErrorCollector implements BeforeAllCallback, AfterAllCallback, Befo
      * Clear the collector.
      */
     public void reset() {
-        writeErrors(new ArrayList<Throwable>());
+        writeErrors(new ArrayList<>());
     }
 
     /**
