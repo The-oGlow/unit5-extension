@@ -35,8 +35,7 @@
 :proj_id_coverity: -1
 :proj_id_openssf: -1
 //6559
-:proj_id_coveralls: -1
-//{proj_gitgroup}/{proj_module}
+:proj_id_coveralls: {proj_gitgroup}/{proj_module}
 
 // common settings - for all modules the same
 :cmmn_shields_hp: https://img.shields.io
