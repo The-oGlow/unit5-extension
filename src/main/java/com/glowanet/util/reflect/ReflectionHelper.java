@@ -19,7 +19,7 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.fail;
 
 /**
- * Utility Helper for accessing class information without the use of Spring's "ReflectionTestUtils".
+ * Utility Helper for accessing clazz information without the use of Spring's "ReflectionTestUtils".
  *
  * @author Oliver Glowa
  * @since 0.10.000

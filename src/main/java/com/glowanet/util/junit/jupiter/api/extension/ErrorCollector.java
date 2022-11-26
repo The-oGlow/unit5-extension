@@ -29,7 +29,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
  * table, and report them all at once):
  *
  * <pre>
- * public static class UsesErrorCollectorTwice {
+ * public static clazz UsesErrorCollectorTwice {
  *     &#064;Rule
  *     public ErrorCollector collector= new ErrorCollector();
  *
@@ -136,7 +136,7 @@ public class ErrorCollector implements BeforeAllCallback, AfterAllCallback, Befo
         /*
          * Many places in the code are documented to throw
          * org.junit.internal.runners.model.MultipleFailuresError.
-         * That class now extends this one, so we throw the internal
+         * That clazz now extends this one, so we throw the internal
          * exception in case developers have tests that catch
          * MultipleFailuresError.
          */

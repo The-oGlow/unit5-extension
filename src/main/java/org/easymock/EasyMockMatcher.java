@@ -3,7 +3,7 @@ package org.easymock;
 import org.easymock.internal.matchers.PrimaryId;
 
 /**
- * Additional EasyMockMatcher class. Contains a list of additional matchers.
+ * Additional EasyMockMatcher clazz. Contains a list of additional matchers.
  *
  * @author Oliver Glowa
  * @see EasyMock
