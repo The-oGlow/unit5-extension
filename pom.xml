@@ -7,7 +7,7 @@
     <parent>
         <groupId>com.glowa-net.maven.parent</groupId>
         <artifactId>global-appl-pom</artifactId>
-        <version>3-SNAPSHOT</version>
+        <version>4-SNAPSHOT</version>
         <relativePath/>
     </parent>
 
