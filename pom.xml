@@ -154,38 +154,6 @@
                     <name>env.GITHUB_ACTOR</name>
                 </property>
             </activation>
-
-            <!--            <scm>-->
-            <!--                <connection>scm:git:https://github.com/The-oGlow/unit5-extension.git</connection>-->
-            <!--                <developerConnection>scm:git:https://github.com/The-oGlow/unit5-extension.git</developerConnection>-->
-            <!--                <url>${project.env.GH_PROJECT_URL}</url>-->
-            <!--                <tag>HEAD</tag>-->
-            <!--            </scm>-->
-        </profile>
-        <profile>
-            <!--
-                Description     :   Define settings for Gitlab
-             -->
-            <id>settings-gitlab</id>
-            <activation>
-                <property>
-                    <name>env.GITLAB_USER_LOGIN</name>
-                </property>
-            </activation>
-
-            <!--            <scm>-->
-            <!--                <connection>scm:git:https://gitlab.com/The-oGlow/unit-extension.git</connection>-->
-            <!--                <developerConnection>scm:git:https://gitlab.com/The-oGlow/unit-extension.git</developerConnection>-->
-            <!--                <url>${project.env.CI_PROJECT_URL}</url>-->
-            <!--                <tag>HEAD</tag>-->
-            <!--            </scm>-->
-
-            <properties>
-                <!-- Gitlab Properties -->
-                <!-- ============================================== -->
-                <!-- The ID of this gitlab repository -->
-                <project.env.CI_PROJECT_ID>37254570</project.env.CI_PROJECT_ID>
-            </properties>
         </profile>
     </profiles>
 </project>
