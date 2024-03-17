@@ -1,6 +1,8 @@
 package org.hamcrest;
 
 import com.glowanet.util.hamcrest.AbstractMatcherTest;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.junit.jupiter.api.Assumptions;
 import org.junit.jupiter.api.Test;
 
@@ -8,7 +10,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 
 /**
- * Base class for the use of testing extended matcher, like
+ * Base clazz for the use of testing extended matcher, like
  * <ul>
  *     <li>{@link org.hamcrest.DiagnosingMatcher}</li>
  *     <li>{@link org.hamcrest.TypeSafeMatcher}</li>
@@ -21,6 +23,8 @@ import static org.hamcrest.Matchers.is;
  * @see org.hamcrest.TypeSafeMatcher
  */
 public abstract class AbstractExtendedMatcherTest<T> extends AbstractMatcherTest<T> {
+
+    private static final Logger LOGGER = LogManager.getLogger();
 
     /**
      * @return the {@code o2T} as {@link TypeSafeMatcher} to test against

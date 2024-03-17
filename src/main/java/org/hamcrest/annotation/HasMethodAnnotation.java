@@ -7,9 +7,9 @@ import org.hamcrest.Description;
 import java.lang.annotation.Annotation;
 
 /**
- * A matcher, which verifies if a class has a specific annotation.
+ * A matcher, which verifies if a clazz has a specific annotation.
  *
- * @param <T> the type of the class which will be checked
+ * @param <T> the type of the clazz which will be checked
  *
  * @author Oliver Glowa
  * @see org.hamcrest.MatchersExtend
@@ -22,7 +22,17 @@ public class HasMethodAnnotation<T extends Annotation> extends BaseMatcher<T> {
     private final Class<T>                     annotationClazz;
     private final AnnotationParameterValidator validator;
 
-    /*
+    /**
+     * @param methodName      the name of the method to look for
+     * @param annotationClazz the clazz of the annotation
+     */
+    private HasMethodAnnotation(String methodName, Class<T> annotationClazz) {
+        this.methodName = methodName;
+        this.annotationClazz = annotationClazz;
+        this.validator = new AnnotationParameterValidator();
+    }
+
+    /**
      * Creates a matcher that matches if the examined {@link Object} has the
      * specified method with the specific annotation.
      * <p>
@@ -30,19 +40,13 @@ public class HasMethodAnnotation<T extends Annotation> extends BaseMatcher<T> {
      * <pre>assertThat(objectCheese, hasMethodAnnotation("getCheese", CheeseAnnotation.class))</pre>
      *
      * @param methodName      the name of the method to look for
-     * @param annotationClazz the class of the annotation
-     * @param <T> type of the values
+     * @param annotationClazz the clazz of the annotation
+     * @param <T>             type of the values
      *
      * @return newly created matcher
      */
     public static <T extends Annotation> HasMethodAnnotation<T> hasMethodAnnotation(String methodName, Class<T> annotationClazz) {
         return new HasMethodAnnotation<>(methodName, annotationClazz);
-    }
-
-    private HasMethodAnnotation(String methodName, Class<T> annotationClazz) {
-        this.methodName = methodName;
-        this.annotationClazz = annotationClazz;
-        this.validator = new AnnotationParameterValidator();
     }
 
     @Override

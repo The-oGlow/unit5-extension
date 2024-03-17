@@ -35,7 +35,7 @@ public class IsBetweenTest {
     }
 
     public Description createDescription() {
-        return new StringDescription().appendText(DESCRIPTION_DEFAULT);
+        return new StringDescription().appendText(DESCRIPTION_DEFAULT.toString());
     }
 
     @Test
@@ -92,10 +92,11 @@ public class IsBetweenTest {
         assertThat(description.toString(), containsString(IsBetween.DESC_MISMATCH.toString()));
     }
 
-    @SuppressWarnings("ConstantConditions")
     @Test
     public void testDescribeMismatchSafelyNullValueDescription() {
-        Assertions.assertThrows(NullPointerException.class, () -> o2T.describeMismatchSafely(LBOUND, null));
+        Assertions.assertThrows(NullPointerException.class, () ->
+                o2T.describeMismatchSafely(LBOUND, null)
+        );
     }
 
     @Test
@@ -126,9 +127,10 @@ public class IsBetweenTest {
         assertThat(description.toString(), containsString(IsBetween.DESC_DESCRIPTION.toString()));
     }
 
-    @SuppressWarnings("ConstantConditions")
     @Test
     public void testDescribeToNullValueDescription() {
-        Assertions.assertThrows(NullPointerException.class, () -> o2T.describeTo(null));
+        Assertions.assertThrows(NullPointerException.class, () ->
+                o2T.describeTo(null)
+        );
     }
 }

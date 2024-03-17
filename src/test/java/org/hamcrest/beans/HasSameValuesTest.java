@@ -4,7 +4,6 @@ import com.glowanet.data.SimplePojo;
 import org.hamcrest.AbstractExtendedMatcherTest;
 import org.hamcrest.Matcher;
 import org.hamcrest.Matchers;
-import org.junit.jupiter.api.Test;
 
 import java.util.regex.Pattern;
 
@@ -84,10 +83,5 @@ public class HasSameValuesTest<T extends SimplePojo> extends AbstractExtendedMat
     @Override
     protected Matcher<String> prepareMatcherDescriptionText_missmatchSafely_nullObject_check() {
         return containsString(DESCRIPTION_DEFAULT + FIELD_NULL);
-    }
-
-    @Test
-    public void testMatchesSafely_noGetter_throw_IAE() {
-
     }
 }

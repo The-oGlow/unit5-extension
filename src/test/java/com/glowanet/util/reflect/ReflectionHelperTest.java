@@ -1,7 +1,33 @@
 package com.glowanet.util.reflect;
 
+import com.glowanet.data.SimplePojo;
+import com.glowanet.data.SimpleSerializable;
+import org.hamcrest.Matcher;
+import org.hamcrest.Matchers;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.function.Executable;
+
+import java.beans.IntrospectionException;
+import java.beans.PropertyDescriptor;
+import java.lang.reflect.Field;
+import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
+
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.containsString;
+import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.hasSize;
+import static org.hamcrest.Matchers.instanceOf;
+import static org.hamcrest.Matchers.notNullValue;
+import static org.hamcrest.Matchers.nullValue;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+
 public class ReflectionHelperTest {
-/*
+
     public static final String   SIMPLE_STRING_NAME  = "simpleString";
     public static final Class<?> SIMPLE_STRING_CLAZZ = String.class;
     public static final String   SIMPLE_STRING_VALUE = "simpleText";
@@ -56,15 +82,25 @@ public class ReflectionHelperTest {
         }
     }
 
+    private void throwableValid(Class<?> expected, Throwable actual) {
+        assertThat(expected, instanceOf(Class.class));
+        assertThat(actual, notNullValue());
+        assertThat(actual, Matchers.instanceOf(expected));
+    }
+
+    private void throwableAssErrValid(Executable actual) {
+        throwableValid(AssertionError.class, assertThrows(Throwable.class, actual, "Throwable raised!"));
+    }
+
     @Test
     public void test_findGetter_with_instance_return_listOfFields() {
         final List<PropertyDescriptor> actual = ReflectionHelper.findGetter(pojo);
         assertValid(actual, hasSize(SimplePojo.GETTER_COUNT));
     }
 
-    @Test(expected = AssertionError.class)
+    @Test
     public void test_findGetter_with_null_throws_failure() {
-        ReflectionHelper.findGetter(null);
+        throwableAssErrValid(() -> ReflectionHelper.findGetter(null));
     }
 
     @Test
@@ -104,9 +140,9 @@ public class ReflectionHelperTest {
         assertNullValid(actual);
     }
 
-    @Test(expected = AssertionError.class)
+    @Test
     public void test_findField_with_fieldNameNullAndInstance_throws_failure() {
-        ReflectionHelper.findField(null, pojo);
+        throwableAssErrValid(() -> ReflectionHelper.findField(null, pojo));
     }
 
     @Test
@@ -122,19 +158,19 @@ public class ReflectionHelperTest {
         assertNullValid(actual);
     }
 
-    @Test(expected = AssertionError.class)
+    @Test
     public void test_findField_with_fieldNameNullAndClazz_throws_failure() {
-        ReflectionHelper.findField(null, pojo.getClass());
+        throwableAssErrValid(() -> ReflectionHelper.findField(null, pojo.getClass()));
     }
 
-    @Test(expected = AssertionError.class)
+    @Test
     public void test_findField_with_fieldNameAndInstanceNull_throws_failure() {
-        ReflectionHelper.findField(SIMPLE_STRING_NAME, (Object) null);
+        throwableAssErrValid(() -> ReflectionHelper.findField(SIMPLE_STRING_NAME, (Object) null));
     }
 
-    @Test(expected = AssertionError.class)
+    @Test
     public void test_findField_with_fieldNameAndClazzNull_throws_failure() {
-        ReflectionHelper.findField(SIMPLE_STRING_NAME, null);
+        throwableAssErrValid(() -> ReflectionHelper.findField(SIMPLE_STRING_NAME, null));
     }
 
     @Test
@@ -149,9 +185,9 @@ public class ReflectionHelperTest {
         assertValid(actual, CONST_FLOAT_VALUE, CONST_FLOAT_CLAZZ);
     }
 
-    @Test(expected = AssertionError.class)
+    @Test
     public void test_readField_with_fieldNameVariableAndClazz_throws_failure() {
-        ReflectionHelper.readField(SIMPLE_INT_NAME, pojo.getClass());
+        throwableAssErrValid(() -> ReflectionHelper.readField(SIMPLE_INT_NAME, pojo.getClass()));
     }
 
     @Test
@@ -174,26 +210,26 @@ public class ReflectionHelperTest {
         assertValid(actual, SimplePojo.CONST_FLOAT, CONST_FLOAT_CLAZZ);
     }
 
-    @Test(expected = AssertionError.class)
+    @Test
     public void test_readField_with_fieldNameNullAndInstance_throws_failure() {
-        ReflectionHelper.readField((String) null, pojo);
+        throwableAssErrValid(() -> ReflectionHelper.readField((String) null, pojo));
     }
 
-    @Test(expected = AssertionError.class)
+    @Test
     public void test_readField_with_fieldNullAndInstance_throws_failure() {
-        ReflectionHelper.readField((Field) null, pojo);
+        throwableAssErrValid(() -> ReflectionHelper.readField((Field) null, pojo));
     }
 
-    @Test(expected = AssertionError.class)
+    @Test
     public void test_readField_with_fieldNotFoundInClazz_throws_failure() {
         final Field field = ReflectionHelper.findField(SIMPLE_STRING_NAME, pojo);
-        ReflectionHelper.readField(field, differentPojo.getClass());
+        throwableAssErrValid(() -> ReflectionHelper.readField(field, differentPojo.getClass()));
     }
 
-    @Test(expected = AssertionError.class)
+    @Test
     public void test_readField_with_fieldNotFoundInInstance_throws_failure() {
         final Field field = ReflectionHelper.findField(SIMPLE_STRING_NAME, pojo);
-        ReflectionHelper.readField(field, differentPojo);
+        throwableAssErrValid(() -> ReflectionHelper.readField(field, differentPojo));
     }
 
     @Test
@@ -202,14 +238,14 @@ public class ReflectionHelperTest {
         assertValid(field.canAccess(pojo), true);
     }
 
-    @Test(expected = AssertionError.class)
+    @Test
     public void test_makeFieldAccessible_withFieldNameNotFoundAndInstance_throws_failure() {
-        ReflectionHelper.makeFieldAccessible(NOT_FOUND, pojo);
+        throwableAssErrValid(() -> ReflectionHelper.makeFieldAccessible(NOT_FOUND, pojo));
     }
 
-    @Test(expected = AssertionError.class)
+    @Test
     public void test_makeFieldAccessible_with_fieldNameNullAndInstance_throws_failure() {
-        ReflectionHelper.makeFieldAccessible((String) null, pojo);
+        throwableAssErrValid(() -> ReflectionHelper.makeFieldAccessible((String) null, pojo));
     }
 
     @Test
@@ -220,11 +256,12 @@ public class ReflectionHelperTest {
         assertValid(field.canAccess(pojo), true);
     }
 
-    @Test(expected = AssertionError.class)
+    @Test
     public void test_makeFieldAccessible_with_fieldNullAndInstance_throws_failure() {
-        ReflectionHelper.makeFieldAccessible((Field) null, pojo);
+        throwableAssErrValid(() -> ReflectionHelper.makeFieldAccessible((Field) null, pojo));
     }
 
+    @Disabled("Doesn't work on github docker")
     @Test
     public void test_setFinalStaticValue_with_fieldNameAndValueAndClazz_replaceValue() throws IllegalAccessException {
         final float valueBefore = CONST_FLOAT_VALUE;
@@ -236,15 +273,15 @@ public class ReflectionHelperTest {
         assertValid(SimplePojo.CONST_FLOAT, valueAfter);
     }
 
-    @Test(expected = AssertionError.class)
+    @Test
     public void test_setFinalStaticValue_with_fieldNameAndValueAndWrongClazz_throws_failure() throws IllegalAccessException {
         final float valueBefore = CONST_FLOAT_VALUE;
         final float valueAfter = valueBefore + 20f;
         assertValid(SimplePojo.CONST_FLOAT, valueBefore);
 
-        final Field field = ReflectionHelper.setFinalStaticValue(CONST_FLOAT_NAME, valueAfter, differentPojo.getClass());
-        assertValid(field.get(CONST_FLOAT_VALUE), valueAfter);
-        assertValid(SimplePojo.CONST_FLOAT, valueAfter);
+        throwableAssErrValid(() ->
+                ReflectionHelper.setFinalStaticValue(CONST_FLOAT_NAME, valueAfter, differentPojo.getClass())
+        );
     }
 
     @Test
@@ -253,9 +290,9 @@ public class ReflectionHelperTest {
         assertValid(actual, CONST_FLOAT_VALUE);
     }
 
-    @Test(expected = AssertionError.class)
+    @Test
     public void test_readStaticValue_with_FieldNameNotFoundAndClazz_throws_failure() {
-        ReflectionHelper.readStaticValue(NOT_FOUND, pojo.getClass());
+        throwableAssErrValid(() -> ReflectionHelper.readStaticValue(NOT_FOUND, pojo.getClass()));
     }
 
     @Test
@@ -264,16 +301,14 @@ public class ReflectionHelperTest {
         assertValid(actual, SIMPLE_STRING_VALUE, SIMPLE_STRING_CLAZZ);
     }
 
-    @Test(expected = AssertionError.class)
+    @Test
     public void test_readGetterValue_with_fieldNameNotFoundAndInstance_throws_failure() {
-        final Object actual = ReflectionHelper.readGetterValue(NOT_FOUND, pojo);
-        assertValid(actual, SIMPLE_STRING_VALUE, SIMPLE_STRING_CLAZZ);
+        throwableAssErrValid(() -> ReflectionHelper.readGetterValue(NOT_FOUND, pojo));
     }
 
-    @Test(expected = AssertionError.class)
+    @Test
     public void test_readGetterValue_with_fieldNameNullAndInstance_throws_failure() {
-        final Object actual = ReflectionHelper.readGetterValue((String) null, pojo);
-        assertValid(actual, SIMPLE_STRING_VALUE, SIMPLE_STRING_CLAZZ);
+        throwableAssErrValid(() -> ReflectionHelper.readGetterValue((String) null, pojo));
     }
 
     @Test
@@ -281,16 +316,73 @@ public class ReflectionHelperTest {
         final Class<?> instanceClazz = ArrayList.class;
         final Class<?> stopClazz = BigDecimal.class;
 
-        final Throwable actual = assertThrows(Throwable.class, () -> ReflectionHelper.handleGetBeanInfo(instanceClazz, stopClazz));
+        final Throwable actual = assertThrows(Throwable.class, () -> ReflectionHelper.handleGetBeanInfo(instanceClazz, stopClazz), "Throwable raised!");
         assertValid(actual, containsString(java.beans.IntrospectionException.class.getName()), AssertionError.class);
     }
 
     @Test
-    public void test_handleInvokeMethod() throws IntrospectionException {
+    public void test_handleInvokeMethod_throws_NoSuchMethodException() throws IntrospectionException {
         PropertyDescriptor getter = new PropertyDescriptor(SIMPLE_STRING_NAME, pojo.getClass());
-        final Throwable actual = assertThrows(Throwable.class, () -> ReflectionHelper.handleInvokeMethod(getter, SIMPLE_STRING_CLAZZ));
+        final Throwable actual = assertThrows(Throwable.class, () -> ReflectionHelper.handleInvokeMethod(getter, SIMPLE_STRING_CLAZZ), "Throwable raised!");
 
         assertValid(actual, containsString(NoSuchMethodException.class.getName()), AssertionError.class);
     }
-*/
+
+    @Test
+    public void testNewInstance_withClazz_return_instance() {
+        Class<?> typeClazz = pojo.getClass();
+
+        Object actual = ReflectionHelper.newInstance(typeClazz);
+
+        assertThat(actual, instanceOf(typeClazz));
+    }
+
+    @Test
+    public void testNewInstance_withNull_return_null() {
+        Object actual = ReflectionHelper.newInstance(null);
+
+        assertThat(actual, nullValue());
+    }
+
+    @Test
+    public void testNewInstance_withWrongConstructor_return_null() {
+        Object actual = ReflectionHelper.newInstance(Long.class);
+
+        assertThat(actual, nullValue());
+    }
+
+    @Test
+    public void testNewInstance_withClazzAndParameter_return_instance() {
+        Class<?> typeClazz = Exception.class;
+        Class<?>[] parameterTypes = {String.class};
+        String expectedMsg = "MSG";
+        Object[] initArgs = {expectedMsg};
+
+        Object actual = ReflectionHelper.newInstance(typeClazz, parameterTypes, initArgs);
+
+        assertThat(actual, instanceOf(typeClazz));
+        assertThat(((Exception) actual).getMessage(), equalTo(expectedMsg));
+    }
+
+    @Test
+    public void testNewInstance_withParameterAllNull_return_null() {
+        Class<?> typeClazz = null;
+        Class<?>[] parameterTypes = null;
+        Object[] initArgs = null;
+
+        Object actual = ReflectionHelper.newInstance(typeClazz, parameterTypes, initArgs);
+
+        assertThat(actual, nullValue());
+    }
+
+    @Test
+    public void testNewInstance_withParameterWrongConstructor_return_null() {
+        Class<?> typeClazz = Long.class;
+        Class<?>[] parameterTypes = {Boolean.class};
+        Object[] initArgs = {true};
+
+        Object actual = ReflectionHelper.newInstance(typeClazz, parameterTypes, initArgs);
+
+        assertThat(actual, nullValue());
+    }
 }

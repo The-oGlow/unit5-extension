@@ -14,7 +14,7 @@ public class SimplePojo {
     public static final int FINAL_COUNT  = 8;
     public static final int CONST_COUNT  = 7;
 
-    public static final Float CONST_FLOAT = 111f;
+    public static final Float CONST_FLOAT = 111F;
     public static       int   STATIC_INT  = 11;
     public final        int   FINAL_INT   = 12;
 

@@ -9,7 +9,7 @@ import static org.hamcrest.Matchers.notNullValue;
 /**
  * A matcher, which verifies if a value is in a specific range, including the bounderies.
  *
- * @param <T> the type of the class which will be checked
+ * @param <T> the type of the clazz which will be checked
  *
  * @author Oliver Glowa
  * @since 0.01.000

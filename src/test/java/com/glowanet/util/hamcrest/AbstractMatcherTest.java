@@ -16,7 +16,7 @@ import static org.hamcrest.Matchers.not;
 import static org.hamcrest.Matchers.notNullValue;
 
 /**
- * Base class for testing a {@link org.hamcrest.BaseMatcher}
+ * Base clazz for testing a {@link org.hamcrest.BaseMatcher}
  * For testing extended matcher, use {@link AbstractExtendedMatcherTest}
  *
  * @param <T> the type, the {@code o2T} uses
@@ -26,13 +26,13 @@ import static org.hamcrest.Matchers.notNullValue;
 public abstract class AbstractMatcherTest<T> {
 
     /**
-     * Class for testing a {@link Matcher} with a different clazz.
+     * Clazz for testing a {@link Matcher} with a different clazz.
      */
     protected static class AbstractMatcherTestDifferentClazz {
     }
 
     /**
-     * Class for testing a {@link Matcher} with a unknown type.
+     * Clazz for testing a {@link Matcher} with a unknown type.
      */
     protected static class UnknownType {
     }
@@ -109,7 +109,7 @@ public abstract class AbstractMatcherTest<T> {
      * @see #fail(String)
      */
     protected static void fail() {
-        Assertions.fail();
+        Assertions.fail(); //NOSONAR java:S2698
     }
 
     /**
@@ -339,7 +339,7 @@ public abstract class AbstractMatcherTest<T> {
     public void testGeneric_testMatches_objectsAreDifferent_throw_assertError() {
         T argument = prepareArgumentToCompareWith();
 
-        Throwable actualThrowable = Assertions.assertThrows(Throwable.class, () -> assertThat(argument, o2T));
+        Throwable actualThrowable = Assertions.assertThrows(Throwable.class, () -> assertThat(argument, o2T)); //NOSONAR java:S2698
         verifyThrowable(actualThrowable, prepareMatcher_objectsAreDifferent_check());
     }
 

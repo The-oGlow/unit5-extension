@@ -3,13 +3,17 @@ package org.easymock;
 import org.easymock.internal.matchers.PrimaryId;
 
 /**
- * Additional EasyMockMatcher class. Contains a list of additional matchers.
+ * Additional EasyMockMatcher clazz. Contains a list of additional matchers.
  *
  * @author Oliver Glowa
  * @see EasyMock
  * @since 0.10.000
  */
 public class EasyMockMatcher {
+
+    private EasyMockMatcher() {
+        // hide public constructor
+    }
 
     /**
      * @param expectedInstance an instance of the expected type
@@ -19,7 +23,7 @@ public class EasyMockMatcher {
      * @return {@code null}.
      */
     public static <T> T eqPrimaryId(final T expectedInstance, final String primIdFieldName) {
-        EasyMock.reportMatcher(new PrimaryId(expectedInstance, primIdFieldName));
+        EasyMock.reportMatcher(new PrimaryId<>(expectedInstance, primIdFieldName));
         return null;
     }
 }
